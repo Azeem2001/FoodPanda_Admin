@@ -40,7 +40,9 @@ export default function (state = initialState, action) {
         error: "",
         user: {},
       };
+        
     default:
       return state;
   }
+
 }

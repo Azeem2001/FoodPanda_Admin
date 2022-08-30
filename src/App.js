@@ -10,6 +10,7 @@ import AddResturant from "./pages/Resturant/AddResturant";
 import setAuthToken from "./utils/setAuthToken";
 import { currentUser } from "./redux/actions/auth";
 import { useDispatch, useSelector } from "react-redux";
+import Alert from "./components/Alert/Alert";
 
 function App() {
   let token = useSelector((state) => state.auth?.token);
@@ -26,17 +27,18 @@ function App() {
     <Container maxWidth="xl" disableGutters={true}>
       <Router>
         <Navbar />
+        <Alert/>
         <Routes>
           {token ? (
             <Fragment>
               {" "}
               <Route path="/" element={<Home />}></Route>
+              <Route path="/addresturant" element={<AddResturant />}></Route>
             </Fragment>
           ) : (
             <Fragment>
               <Route path="/Rigester" element={<Rigester />}></Route>
               <Route path="/LoginPage" element={<LoginPage />}></Route>
-              <Route path="/addresturant" element={<AddResturant />}></Route>
             </Fragment>
           )}
         </Routes>

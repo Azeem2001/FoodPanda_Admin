@@ -1,7 +1,7 @@
 import { Types } from "../Types";
 import axios from "axios";
 import { BASE_URL } from "../../config/config";
-
+import { setAlert } from "./alert";
 export const userRegister =
   (formData, setEmail, setName, setPassword, navigate, setLoading, setImage) =>
   async (dispatch) => {
@@ -14,6 +14,11 @@ export const userRegister =
       console.log(response.data);
       localStorage.setItem("token", response?.data?.token);
       dispatch({ type: Types.USER_REGISTERED, payload: response?.data });
+      dispatch(setAlert({
+        time:1000,
+        message:"Sign Up SuccessFully Done",
+        type:"success"
+      }))
       setLoading(false);
       navigate("/");
       setEmail("");
@@ -50,6 +55,11 @@ export const userLogin =
       // console.log(response.data)
       localStorage.setItem("token", response?.data?.token);
       dispatch({ type: Types.USER_LOGIN, payload: response?.data });
+      dispatch(setAlert({
+        time:1000,
+        message:"Login SuccessFully Done",
+        type:"success"
+      }))
       setLoading(false);
       navigate("/");
       setEmail("");
@@ -60,6 +70,19 @@ export const userLogin =
         payload: error?.response?.status,
       });
       console.log(error);
+      dispatch(
+        setAlert({
+          time: 1000,
+          message: error?.message,
+          type: "error",
+        })
+      );
+      dispatch(
+        setAlert({
+          time: 1000,
+          message: error?.response?.data?.status,
+          type: "error",
+        }))
       setLoading(false);
     }
   };
@@ -94,17 +117,69 @@ export const checkEmail =
 export const currentUser = (usertoken) => async (dispatch) => {
   try {
     let response = await axios.post(`${BASE_URL}/api/auth/current-user`);
-    console.log(response.data);
     dispatch({ type: Types.GET_CURRENT_USER, payload: response?.data });
+    dispatch(
+      setAlert({
+        time: 1000,
+        message:response?.data?.status,
+        type: "success",
+      }))
   } catch (error) {
     dispatch({
       type: Types.GET_CURRENT_USER_FAILED,
       payload: error?.response?.status,
     });
-    console.log(error);
+    console.log(error); 
   }
 };
 export const logout = () => async (dispatch) => {
+  console.log("hello")
   localStorage.removeItem("token");
-  dispatch();
+  dispatch(
+    setAlert({
+      time: 1000,
+      message:'User has been logout',
+      type: "error",
+    }))
+    dispatch({
+      type: Types.USER_LOGOUT,
+    });
 };
+
+export const ResturantData = (formData,   setLoading,
+  setLocation,
+  setResturant,
+  setCityName,
+  setPlace,
+  setImage ) => async(dispatch) =>{
+  try {
+    let response = await axios.post(`${BASE_URL}/api/restaurant/add-restaurant`, formData )
+
+    dispatch({ type: Types.ADD_RESTURANT_DATA, payload: response?.data });
+    dispatch(
+      setAlert({
+        time: 1000,
+        message: response?.data?.status,
+        type: "success",
+      }))
+    setLoading(false)
+    setResturant("")
+    setLocation("")
+    setCityName("")
+    setPlace("")
+    setImage("")
+  } catch (error) {
+    
+    dispatch({
+      type: Types.ADD_RESTURANT_DATA_FAILED,
+      payload: error?.response?.status,
+    });
+    dispatch(
+      setAlert({
+        time: 1000,
+        message: error?.response?.data?.status,
+        type: "error",
+      }))
+  }
+
+}

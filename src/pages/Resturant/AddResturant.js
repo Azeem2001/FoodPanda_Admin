@@ -5,7 +5,9 @@ import style from "./AddResturant.module.scss";
 import FormControlLabel from "@mui/material/FormControlLabel";
 import Switch from "@mui/material/Switch";
 import SaveIcon from "@mui/icons-material/Save";
+import { useDispatch } from "react-redux/es/exports";
 import SendIcon from "@mui/icons-material/Send";
+import { uploadImage, ResturantData } from "../../redux/actions/auth";
 import { Button } from "@mui/material";
 import PlacesAutocomplete, {
   geocodeByAddress,
@@ -13,10 +15,38 @@ import PlacesAutocomplete, {
 } from "react-places-autocomplete";
 import { Stack } from "@mui/system";
 const AddResturant = () => {
+  let dispatch = useDispatch();
   const [loading, setLoading] = React.useState(false);
-  const [location, setLocation] = useState("");
+  const [location, setLocation] = useState({
+    coordinates: [],
+  });
+  const [resturant, setResturant] = useState("");
+  const [cityName, setCityName] = useState("");
+  const [place, setPlace] = useState("");
+  const [image, setImage] = useState("");
   function handleClick() {
     setLoading(true);
+  }
+  function submitResurantData() {
+    let data = {
+      restaurantStatus:loading,
+      location,
+     name: resturant,
+      city: cityName,
+      location: location,
+      image,
+    };
+    dispatch(
+      ResturantData(
+        data,
+        setLoading,
+        setLocation,
+        setResturant,
+        setCityName,
+        setPlace,
+        setImage
+      )
+    );
   }
 
   return (
@@ -30,7 +60,13 @@ const AddResturant = () => {
           noValidate
           autoComplete="off"
         >
-          <TextField label="Resturant Name" color="secondary" focused />
+          <TextField
+            label="Resturant Name"
+            value={resturant}
+            onChange={(e) => setResturant(e.target.value)}
+            color="secondary"
+            focused
+          />
         </Box>
         <div className={style.span}>
           <p>OFF LINE</p>
@@ -58,7 +94,13 @@ const AddResturant = () => {
           noValidate
           autoComplete="off"
         >
-          <TextField label="City Name" color="secondary" focused />
+          <TextField
+            label="City Name"
+            value={cityName}
+            onChange={(e) => setCityName(e.target.value)}
+            color="secondary"
+            focused
+          />
         </Box>
         <Box
           component="form"
@@ -67,9 +109,17 @@ const AddResturant = () => {
           }}
         >
           <PlacesAutocomplete
-            value={location}
-            onChange={(e) => setLocation(e)}
-            onSelect={(e) => console.log(e)}
+            value={place}
+            onChange={(e) => {
+              setPlace(e)
+              setLocation(e);
+            }}
+            onSelect={async (e) => {
+              let result = await geocodeByAddress(e);
+              console.log(await getLatLng(result[0]));
+              const { lat, lng } = await getLatLng(result[0]);
+              setLocation({ coordinates: [lat, lng] });
+            }}
           >
             {({
               getInputProps,
@@ -86,8 +136,10 @@ const AddResturant = () => {
             /> */}
 
                 <TextField
-                  label="City Name"
+                  label="Search Places"
                   color="secondary"
+                  value={place}
+                  onChange={(e) => setPlace(e.target.value)}
                   focused
                   fullWidth
                   {...getInputProps({
@@ -121,19 +173,33 @@ const AddResturant = () => {
             )}
           </PlacesAutocomplete>
         </Box>
-        <div className={style.requirement}>         
-          <Button variant="contained" component="label"  color="secondary">
+        <div className={style.requirement}>
+          <Button variant="contained" component="label" color="secondary">
             Upload Resturant image
             <input
               hidden
               accept="image/*"
               type="file"
-              // onChange={async(e) => {
-              //   let image = await dispatch(uploadImage(e.target.files[0]));
-              //   setImage(image)
-              // }}
+              onChange={async (e) => {
+                let image = await dispatch(uploadImage(e.target.files[0]));
+                setImage(image);
+              }}
             />
           </Button>
+          <Box
+            component="form"
+            sx={{
+              "& > :not(style)": { mt: "3rem", p: "1rem", width: "40%" },
+            }}
+          >
+            <Button
+              variant="outlined"
+              onClick={submitResurantData}
+              color="secondary"
+            >
+              Submit Form
+            </Button>
+          </Box>
         </div>
       </div>
     </div>
