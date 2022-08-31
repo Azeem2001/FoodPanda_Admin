@@ -1,4 +1,24 @@
 .Resturant_container{
-    width: 100%;
-    margin-top: 5rem;
+    width: 90%;
+    margin: 5rem auto;
+ 
+    h1{
+       font-size: 3rem;
+       padding-left: 2rem;
+       margin-left: 2rem;
+       color: #D70F64;
+     }
+     .Resturant_Name{
+      height:10vh;
+      margin-top: 1rem;
+      border-bottom: 1px solid #E21B70;
+      border-top: 1px solid #E21B70;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+     img{
+        width: 6rem;
+      }
+
+    }
 }

@@ -9,8 +9,6 @@ import { logout } from "../../redux/actions/auth";
 const Navbar = () => {
   const logo = "./images/cropped-foodpanda-favicon.png";
   let token = useSelector((state) => state.auth?.token);
-  let auth = useSelector((state)=> state.auth)
-  console.log(auth)
   let dispatch = useDispatch();
   let navigate = useNavigate();
 
@@ -26,7 +24,7 @@ const Navbar = () => {
             {/* <AccountCircleIcon /> */}
             {token ? (
               <>
-              <Button onClick={() => dispatch(logout())} variant="contained">
+              <Button onClick={() => dispatch(logout(navigate))} variant="contained">
                 Logout
               </Button>
                  <Button onClick={() => navigate("/addresturant")} variant="contained" >

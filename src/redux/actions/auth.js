@@ -116,25 +116,26 @@ export const checkEmail =
   };
 export const currentUser = (usertoken) => async (dispatch) => {
   try {
-    let response = await axios.post(`${BASE_URL}/api/auth/current-user`);
-    dispatch({ type: Types.GET_CURRENT_USER, payload: response?.data });
-    dispatch(
-      setAlert({
-        time: 1000,
-        message:response?.data?.status,
-        type: "success",
-      }))
+    let response = await axios.get(`${BASE_URL}/api/auth/current-user`);
+    dispatch({ type: Types.GET_CURRENT_USER, payload: response?.data   });
+ 
+    // dispatch(
+    //   setAlert({
+    //     time: 1000,
+    //     message:response?.data?.status,
+    //     type: "success",
+    //   }))
   } catch (error) {
     dispatch({
       type: Types.GET_CURRENT_USER_FAILED,
       payload: error?.response?.status,
     });
-    console.log(error); 
+   console.log(error)
   }
 };
-export const logout = () => async (dispatch) => {
-  console.log("hello")
+export const logout = (navigate) => async (dispatch) => {
   localStorage.removeItem("token");
+  navigate("/loginPage")
   dispatch(
     setAlert({
       time: 1000,
