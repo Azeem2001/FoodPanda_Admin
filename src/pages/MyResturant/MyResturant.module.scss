@@ -1,0 +1,70 @@
+.MyResturant_container{
+    width: 100%;
+    display: flex;
+    justify-content:center;
+    align-items: center;
+    flex-direction: column;
+    margin-top: 5rem;
+    .MyResturant_Form{
+      width: 80%;        
+     
+      .span{
+        display: flex;
+
+        p{
+            position: relative;
+            top: 0.4rem;
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+     }
+     .addItem{
+        width: 100%;
+           display: flex;
+          justify-content: flex-end;
+          margin-top: 1rem;
+                 
+        button{
+            border-radius: 50%;
+            background-color: cornflowerblue;
+            border: none;
+            color: #fff;
+            padding: 1rem;
+    
+           
+        }
+}
+
+    .removeCategory{
+           position: relative;
+        button{
+            border: none;
+            border-radius: 50%;
+            background: #fff;
+            position: absolute;
+            bottom: 0;
+            left: -2rem;
+           
+        }
+    }
+     }
+     .addCategory{
+        width: 80%;
+           display: flex;
+          justify-content: flex-end;
+          margin-top: 1rem;
+                 
+        button{
+            border-radius: 50%;
+            background-color: cornflowerblue;
+            border: none;
+            color: #fff;
+            padding: 1rem;
+    
+           
+        }
+}
+
+     
+    }
+   

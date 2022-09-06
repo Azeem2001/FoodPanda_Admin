@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import Alert from "./components/Alert/Alert";
 import PrivateRoute from "./components/Router/PrivateRoute";
 import PublicRoute from "./components/Router/PublicRoute";
-
+import MyResturant from "./pages/MyResturant/MyResturant"
 function App() {
   let token = useSelector((state) => state.auth?.token);
   let user = useSelector((state) => state.auth?.user);
@@ -42,6 +42,12 @@ function App() {
               path="/addresturant"
               element={
                 <PrivateRoute component={<AddResturant />}></PrivateRoute>
+              }
+            ></Route>
+          <Route
+              path="/myResturant"
+              element={
+                <PrivateRoute component={<MyResturant />}></PrivateRoute>
               }
             ></Route>
           </Fragment>
