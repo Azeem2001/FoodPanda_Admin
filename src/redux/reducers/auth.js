@@ -29,7 +29,7 @@ export default function (state = initialState, action) {
     case Types.GET_CURRENT_USER:
       return {
         ...state,
-        ...payload,    
+        ...payload,
       };
     case Types.USER_LOGOUT:
       return {
@@ -40,9 +40,8 @@ export default function (state = initialState, action) {
         error: "",
         user: {},
       };
-        
+
     default:
       return state;
   }
-
 }
